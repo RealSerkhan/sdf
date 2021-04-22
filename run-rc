@@ -1,0 +1,23 @@
+#!/bin/sh
+
+. /etc/init.d
+
+[ -f /usr/local/sbin/run-rc.sh ] || exit 0
+
+case "$1" in
+	start)
+		echo "Tasks run ---"
+		/usr/local/sbin/run-rc.sh &
+		echo "------------"
+ 		touch /var/lock/subsys/run-rc
+		;;
+	stop)
+		echo "Tasks stopping ----"
+		killall -q -9 runtasks.sh &
+		rm -f /var/lock/subsys/run-rc
+		;;
+	*)
+		echo "start, stop"
+		exit 1
+esac
+exit 0
